@@ -1,0 +1,14 @@
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/bin/Debug/net8.0/EcommerceLearn.Domain.deps.json
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/bin/Debug/net8.0/EcommerceLearn.Domain.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/bin/Debug/net8.0/EcommerceLearn.Domain.pdb
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.AssemblyInfoInputs.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.AssemblyInfo.cs
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.csproj.CoreCompileInputs.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/refint/EcommerceLearn.Domain.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.pdb
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/ref/EcommerceLearn.Domain.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.csproj.AssemblyReference.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/bin/Debug/net8.0/EcommerceLearn.Domain.runtimeconfig.json
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Domain/obj/Debug/net8.0/EcommerceLearn.Domain.genruntimeconfig.cache

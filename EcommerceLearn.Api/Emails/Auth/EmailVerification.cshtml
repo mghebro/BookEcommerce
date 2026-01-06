@@ -1,0 +1,140 @@
+@model EcommerceLearn.Application.Emails.EmailVerificationModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to [Bookstore Name] - Verify Your Email</title>
+    <style type="text/css">
+        /* Client-specific Styles */
+        body, table, td, a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* Reset */
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        /* iOS Blue Links */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+    </style>
+</head>
+<body
+    style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f7f7f5;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="min-height: 100vh;">
+    <tr>
+        <td align="center" style="padding: 40px 20px;">
+
+            <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0"
+                   style="max-width: 600px; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <td align="center"
+                        style="padding: 24px 32px 16px 32px; background-color: #0d47a1; border-radius: 8px 8px 0 0;">
+                        <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff;">
+                            [Bookstore Name]
+                        </h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 32px 40px 40px 40px;">
+
+                        <h2 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #333333;">
+                            Welcome, @Model.FirstName!
+                        </h2>
+
+                        <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: #555555;">
+                            You're just one click away from exploring our shelves and discovering your next great read.
+                            Please verify your email address to complete your registration:
+                        </p>
+
+                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td align="center" style="padding: 10px 0;">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                        <tr>
+                                            <td align="center" bgcolor="#0d47a1"
+                                                style="border-radius: 4px; background-color: #0d47a1;">
+                                                <a href="@Model.VerificationLink" target="_blank"
+                                                   style="display: inline-block; padding: 14px 40px; font-size: 18px; font-weight: 600; color: #ffffff; text-decoration: none; border-radius: 4px;">
+                                                    📚 Verify My Email
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin: 30px 0 10px 0; font-size: 14px; line-height: 1.5; color: #777777; text-align: center;">
+                            *If the button above does not work, use this code in your app:*
+                        </p>
+
+                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td align="center" bgcolor="#f0f0f0"
+                                    style="background-color: #f0f0f0; padding: 16px 20px; border-radius: 4px; border: 1px dashed #cccccc;">
+                                    <span
+                                        style="font-size: 22px; font-weight: 700; color: #333333; letter-spacing: 3px; user-select: all;">
+                                        @Model.Code
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin: 24px 0 0 0; font-size: 12px; line-height: 1.5; color: #999999; word-break: break-all;">
+                            Or copy and paste this link into your browser: <br/>
+                            <a href="@Model.VerificationLink"
+                               style="color: #0d47a1; font-weight: 500;">@Model.VerificationLink</a>
+                        </p>
+
+                        <p style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #555555;">
+                            Happy reading!<br/>
+                            <span style="color: #333333; font-weight: 600;">The [Bookstore Name] Team</span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+            <p style="margin: 24px 0 0 0; font-size: 12px; color: #aaaaaa;">
+                If you did not initiate this account creation, please disregard this email. Your email address will not
+                be verified.
+            </p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

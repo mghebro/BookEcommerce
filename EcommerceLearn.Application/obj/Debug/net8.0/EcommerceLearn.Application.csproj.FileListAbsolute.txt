@@ -1,0 +1,17 @@
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.csproj.AssemblyReference.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.AssemblyInfoInputs.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.AssemblyInfo.cs
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.csproj.CoreCompileInputs.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Application.deps.json
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Application.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Application.pdb
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Domain.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Domain.pdb
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/refint/EcommerceLearn.Application.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.pdb
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/ref/EcommerceLearn.Application.dll
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/bin/Debug/net8.0/EcommerceLearn.Application.runtimeconfig.json
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/EcommerceLearn.Application.genruntimeconfig.cache
+/home/mghebro/Desktop/EcommerceLearn/EcommerceLearn.Application/obj/Debug/net8.0/Ecommerc.BF881E7F.Up2Date

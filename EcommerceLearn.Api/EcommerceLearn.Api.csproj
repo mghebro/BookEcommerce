@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+    </PropertyGroup>
+
+    
+    <ItemGroup>
+        <Content Update="Emails/**/*.cshtml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+        <PackageReference Include="FluentValidation" Version="12.1.1"/>
+        <PackageReference Include="GraphQL" Version="8.8.0"/>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.11"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.11"/>
+        <PackageReference Include="HotChocolate.AspNetCore.GraphiQL" Version="10.5.5"/>
+        <PackageReference Include="HotChocolate.Authorization" Version="15.1.11"/>
+        <PackageReference Include="HotChocolate.Data" Version="15.1.11"/>
+        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="15.1.11"/>
+        <PackageReference Include="HotChocolate.Types" Version="15.1.11"/>
+        <PackageReference Include="MediatR" Version="14.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.22"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11"/>
+        <PackageReference Include="RazorLight" Version="2.3.1"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\EcommerceLearn.Application\EcommerceLearn.Application.csproj"/>
+        <ProjectReference Include="..\EcommerceLearn.Infrastructure\EcommerceLearn.Infrastructure.csproj"/>
+    </ItemGroup>
+
+</Project>
