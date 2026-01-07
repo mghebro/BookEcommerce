@@ -52,3 +52,10 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# IDE folders
+.idea/
+.vscode/
+
+# Rider / ReSharper
+*.DotSettings.user
