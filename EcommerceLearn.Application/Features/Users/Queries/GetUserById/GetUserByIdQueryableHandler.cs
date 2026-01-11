@@ -1,10 +1,12 @@
 ﻿using EcommerceLearn.Application.Interfaces.Persistence;
+using EcommerceLearn.Domain.Common.Results;
 using EcommerceLearn.Domain.Entities.Users;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceLearn.Application.Features.Users.Queries.GetUserById;
 
-public sealed class GetUserByIdQueryableHandler : IRequestHandler<GetUserByIdQueryable, IQueryable<User>>
+public sealed class GetUserByIdQueryableHandler : IRequestHandler<GetUserByIdQueryable, Result<User>>
 {
     private readonly IDataContext _db;
 
@@ -13,10 +15,11 @@ public sealed class GetUserByIdQueryableHandler : IRequestHandler<GetUserByIdQue
         _db = db;
     }
 
-    public Task<IQueryable<User>> Handle(GetUserByIdQueryable req, CancellationToken ct)
+    public async Task<Result<User>> Handle(GetUserByIdQueryable req, CancellationToken ct)
     {
-        var query = _db.Users.Where(e => e.Id == req.Id);
-
-        return Task.FromResult(query);
+        var user = await _db.Users.FirstOrDefaultAsync(e => e.Id == req.Id, ct);
+        if (user == null)
+            return Result<User>.Failure(Errors.NotFound("User not found"));
+        return Result<User>.Success(user);
     }
 }

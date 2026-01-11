@@ -3,4 +3,4 @@ using MediatR;
 
 namespace EcommerceLearn.Application.Features.Books.Queries.GetBookById;
 
-public sealed record GetBookByIdQueryable(int Id) : IRequest<IQueryable<Book>>;
+public sealed record GetBookByIdQueryable(int Id) : IRequest<Result<Book>>;

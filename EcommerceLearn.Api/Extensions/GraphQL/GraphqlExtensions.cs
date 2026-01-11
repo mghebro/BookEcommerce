@@ -1,4 +1,5 @@
 ﻿using EcommerceLearn.Api.Projection.GraphQL.Books;
+using EcommerceLearn.Api.Projection.GraphQL.Carts;
 using EcommerceLearn.Api.Projection.GraphQL.Users;
 
 namespace EcommerceLearn.Api.Extensions.GraphQL;
@@ -21,9 +22,11 @@ public static class GraphqlExtensions
             // Queries
             .AddTypeExtension<UserQueries>()
             .AddTypeExtension<BookQueries>()
+            .AddTypeExtension<CartQueries>()
             // Types
             .AddType<UserType>()
-            .AddType<BookType>();
+            .AddType<BookType>()
+            .AddType<CartType>();
 
         return services;
     }

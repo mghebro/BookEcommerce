@@ -1,5 +1,6 @@
 ﻿using EcommerceLearn.Application.Interfaces.Persistence;
 using EcommerceLearn.Application.Features.Auth.Services;
+using EcommerceLearn.Domain.Entities.Carts;
 using EcommerceLearn.Domain.Entities.Users;
 using MediatR;
 
@@ -29,6 +30,7 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, Result>
 
         var verification = await _email.SendEmailVerification(user);
         user.SetEmailVerification(verification);
+        user.CreateCart();
 
         _db.Users.Add(user);
         await _db.SaveChangesAsync(ct);

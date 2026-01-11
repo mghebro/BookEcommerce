@@ -10,12 +10,13 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
 {
     private readonly IDataContext _db;
 
-    public GetAllUsersQueryHandler(IDataContext dataContext) => _db = dataContext;
+    public GetAllUsersQueryHandler(IDataContext dataContext)
+    {
+        _db = dataContext;
+    }
 
     public async Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken ct)
     {
-        var users = await _db.Users.ToListAsync(ct);
-
-        return users;
+        return await _db.Users.ToListAsync(ct);
     }
 }

@@ -2,8 +2,8 @@
 using EcommerceLearn.Domain.Common.Results;
 using EcommerceLearn.Domain.Common.Guards;
 using EcommerceLearn.Domain.Entities.Auth;
+using EcommerceLearn.Domain.Entities.Carts;
 using EcommerceLearn.Domain.ValueObjects;
-using EcommerceLearn.Domain.Enums.Auth;
 
 namespace EcommerceLearn.Domain.Entities.Users;
 
@@ -12,12 +12,11 @@ public sealed class User : Entity<int>
 {
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
-    public UserRole Role { get; private set; } = UserRole.User;
     public string? Password { get; private set; } = string.Empty;
 
     public Email Email { get; private set; }
     public bool IsVerified { get; private set; } = false;
-
+    public Cart Cart { get; private set; } = null!;
     public EmailVerification EmailVerification { get; private set; }
     public PasswordVerification PasswordEmailVerification { get; private set; }
 
@@ -32,6 +31,11 @@ public sealed class User : Entity<int>
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+    }
+
+    public void CreateCart()
+    {
+        Cart = Cart.Create(this);
     }
 
     //factory method for create user it uses validations

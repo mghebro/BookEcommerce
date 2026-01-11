@@ -12,5 +12,4 @@ public sealed record CreateBookCommand(
     string Language,
     decimal Price,
     string? CoverImageUrl = null,
-    int? UserId = null,
     List<Category>? Categories = null) : IRequest<Result>;

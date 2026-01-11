@@ -28,7 +28,7 @@ public class BooksController : ControllerBase
     {
         var userId = this.GetUserId();
         var cmd = new CreateBookCommand(req.Title, req.Description, req.Isbn, req.PageCount, req.AuthorFullname,
-            req.Language, req.Price, req.CoverImageUrl, userId, new List<Category>());
+            req.Language, req.Price, req.CoverImageUrl, new List<Category>());
 
         var result = await _mediator.Send(cmd, ct);
         return Ok(result);

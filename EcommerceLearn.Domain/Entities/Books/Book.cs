@@ -14,11 +14,7 @@ public sealed class Book : Entity<int>
     public int PageCount { get; private set; }
     public string CoverImageUrl { get; private set; } = string.Empty;
     public string AuthorFullname { get; private set; } = string.Empty;
-    public int? AuthorId { get; private set; }
-    public User? Author { get; private set; }
 
-    public int? PublisherId { get; private set; }
-    public User? Publisher { get; private set; }
 
     private readonly List<BookCategory> _bookCategories = new();
     public IReadOnlyCollection<BookCategory> BookCategories => _bookCategories.AsReadOnly();
@@ -108,19 +104,11 @@ public sealed class Book : Entity<int>
         return Result.Success();
     }
 
-    public void SetAuthor(int authorId, User author)
+    public void SetAuthor(string authorFullName)
     {
-        AuthorId = authorId;
-        Author = author;
-        AuthorFullname = author.FirstName + " " + author.LastName;
+        AuthorFullname = authorFullName;
     }
 
-    public void SetPublisher(int publisherId, User publisher, string authorFullname)
-    {
-        PublisherId = publisherId;
-        Publisher = publisher;
-        AuthorFullname = authorFullname;
-    }
 
     public Result AddCategory(Category category)
     {

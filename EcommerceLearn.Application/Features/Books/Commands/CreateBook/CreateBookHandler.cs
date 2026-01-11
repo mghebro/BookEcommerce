@@ -1,7 +1,6 @@
 using EcommerceLearn.Application.Interfaces.Persistence;
 using EcommerceLearn.Domain.Common.Results;
 using EcommerceLearn.Domain.Entities.Books;
-using EcommerceLearn.Domain.Enums.Auth;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,24 +38,6 @@ public sealed class CreateBookHandler : IRequestHandler<CreateBookCommand, Resul
             var coverResult = book.SetCoverImage(request.CoverImageUrl);
             if (!coverResult.IsSuccess)
                 return Result.Failure(coverResult.Error!);
-        }
-
-        if (request.UserId.HasValue)
-        {
-            var user =
-                await _db.Users.FirstOrDefaultAsync(u => u.Id == request.UserId.Value,
-                    cancellationToken);
-
-            if (user == null)
-                return Result.Failure(Errors.NotFound("user not found"));
-            if (user.Role == UserRole.Author)
-            {
-                book.SetAuthor(request.UserId.Value, user);
-                book.SetPublisher(request.UserId.Value, user, request.AuthorFullname);
-            }
-
-            if (user.Role == UserRole.Publisher)
-                book.SetPublisher(request.UserId.Value, user, request.AuthorFullname);
         }
 
 

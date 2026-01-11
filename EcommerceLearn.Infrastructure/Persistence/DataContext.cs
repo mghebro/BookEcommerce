@@ -3,7 +3,6 @@ using EcommerceLearn.Domain.Entities.Auth;
 using EcommerceLearn.Domain.Entities.Books;
 using EcommerceLearn.Domain.Entities.Carts;
 using EcommerceLearn.Domain.Entities.Orders;
-using EcommerceLearn.Domain.Entities.Reviews;
 using Microsoft.EntityFrameworkCore;
 using EcommerceLearn.Domain.Entities.Users;
 
@@ -16,7 +15,6 @@ public sealed class DataContext : DbContext, IDataContext
     public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<CartItem> CartItems => Set<CartItem>();
     public DbSet<Order> Orders => Set<Order>();
-    public DbSet<Review> Reviews => Set<Review>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<EmailVerification> EmailVerifications => Set<EmailVerification>();
     public DbSet<PasswordVerification> PasswordVerifications => Set<PasswordVerification>();

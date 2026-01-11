@@ -7,6 +7,7 @@ using EcommerceLearn.Api.Filters;
 using EcommerceLearn.Application;
 using FluentValidation;
 using MediatR;
+using Microsoft.OpenApi.Models;
 
 namespace EcommerceLearn.Api.Extensions.Core;
 
@@ -24,9 +25,40 @@ public static class ServerExtensions
         services.AddEndpointsApiExplorer();
         services.AddJwtAuth(config);
         services.AddControllers();
-        services.AddSwaggerGen();
+        services.AddSwagger();
         services.AddServerCors();
 
+        return services;
+    }
+
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new()
+            {
+                In = ParameterLocation.Header,
+                Description = "Please insert token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "bearer"
+            });
+            options.AddSecurityRequirement(new()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new()
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
+            });
+        });
         return services;
     }
 

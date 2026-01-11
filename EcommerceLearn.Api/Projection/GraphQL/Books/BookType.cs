@@ -18,25 +18,10 @@ public class BookType : ObjectType<Book>
         descriptor.Field(x => x.Price).Type<DecimalType>();
 
 
-        descriptor.Field(x => x.Author).Type<UserType>(); // Assuming UserType is defined
+        // descriptor.Field(x => x.BookCategories)
+        //    .Type<ListType<BookCategoryType>>(); 
 
-        descriptor.Field(x => x.Publisher).Type<UserType>(); // Assuming UserType is defined
-
-
-        //  descriptor.Field(x => x.BookCategories)
-        //     .Type<ListType<BookCategoryType>>(); 
-
-
-        descriptor.Ignore(x => x.AuthorId);
-        descriptor.Ignore(x => x.PublisherId);
 
         descriptor.Ignore(x => x.BookCategories);
-        descriptor.Ignore(b => b.Update(
-            default, default, default, default, default
-        ));
-
-        descriptor.Ignore(b => b.AddCategory(default));
-        descriptor.Ignore(b => b.RemoveCategory(default));
-        descriptor.Ignore(b => b.SetCoverImage(default!));
     }
 }
