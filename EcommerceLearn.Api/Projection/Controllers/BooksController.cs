@@ -27,8 +27,9 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> Register(CreateBookRequest req, CancellationToken ct)
     {
         var userId = this.GetUserId();
-        var cmd = new CreateBookCommand(req.Title, req.Description, req.Isbn, req.PageCount, req.AuthorFullname,
-            req.Language, req.Price, req.CoverImageUrl, new List<Category>());
+        var cmd = new CreateBookCommand(req.Title, req.Description, req.Isbn, req.PageCount, req.CoverImageUrl,
+            req.AuthorFullname,
+            req.Language, req.Price, new List<Category>());
 
         var result = await _mediator.Send(cmd, ct);
         return Ok(result);
@@ -38,8 +39,8 @@ public class BooksController : ControllerBase
     [HttpPost("update-book")]
     public async Task<IActionResult> Update(UpdateBookRequest req, CancellationToken ct)
     {
-        var cmd = new UpdateBookCommand(req.Id, req.Title, req.Description, req.PageCount, req.Language, req.Price,
-            req.CoverImageUrl);
+        var cmd = new UpdateBookCommand(req.Id, req.Title, req.Description, req.PageCount, req.CoverImageUrl,
+            req.Language, req.Price);
 
         var result = await _mediator.Send(cmd, ct);
         return Ok(result);

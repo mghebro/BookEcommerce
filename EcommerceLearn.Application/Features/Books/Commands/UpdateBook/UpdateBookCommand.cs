@@ -7,7 +7,7 @@ public sealed record UpdateBookCommand(
     string? Title = null,
     string? Description = null,
     int? PageCount = null,
+    string? CoverImageUrl = null,
     string? Language = null,
-    decimal? Price = null,
-    string? CoverImageUrl = null
+    decimal? Price = null
 ) : IRequest<Result>;

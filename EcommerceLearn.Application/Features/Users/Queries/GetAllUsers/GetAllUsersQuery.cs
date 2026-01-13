@@ -3,4 +3,4 @@ using MediatR;
 
 namespace EcommerceLearn.Application.Features.Users.Queries.GetAllUsers;
 
-public record GetAllUsersQuery : IRequest<List<User>>;
+public record GetAllUsersQuery : IRequest<IQueryable<User>>;

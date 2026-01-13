@@ -1,4 +1,3 @@
-using EcommerceLearn.Application.Features.Auth.Services;
 using EcommerceLearn.Application.Interfaces.Persistence;
 using EcommerceLearn.Application.Interfaces.Security;
 using EcommerceLearn.Application.Interfaces.SMTP;

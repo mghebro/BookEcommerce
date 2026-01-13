@@ -30,7 +30,7 @@ public sealed class UserQueries
         return result.Value!;
     }
 
-    public async Task<List<User>> GetAllUsers(IMediator mediator, CancellationToken ct)
+    public async Task<IQueryable<User>> GetAllUsers(IMediator mediator, CancellationToken ct)
     {
         return await mediator.Send(new GetAllUsersQuery(), ct);
     }

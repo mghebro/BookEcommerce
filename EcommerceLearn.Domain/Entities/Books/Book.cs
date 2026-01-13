@@ -14,8 +14,8 @@ public sealed class Book : Entity<int>
     public int PageCount { get; private set; }
     public string CoverImageUrl { get; private set; } = string.Empty;
     public string AuthorFullname { get; private set; } = string.Empty;
-
-
+    public bool IsDeleted { get; private set; } = false;
+    public bool IsAvailable => !IsDeleted;
     private readonly List<BookCategory> _bookCategories = new();
     public IReadOnlyCollection<BookCategory> BookCategories => _bookCategories.AsReadOnly();
 
@@ -31,6 +31,7 @@ public sealed class Book : Entity<int>
         string description,
         string isbn,
         int pageCount,
+        string coverImageUrl,
         string authorFullname,
         string language,
         decimal price)
@@ -39,6 +40,7 @@ public sealed class Book : Entity<int>
         Description = description;
         Isbn = isbn;
         PageCount = pageCount;
+        CoverImageUrl = coverImageUrl;
         AuthorFullname = authorFullname;
         Language = language;
         Price = price;
@@ -49,6 +51,7 @@ public sealed class Book : Entity<int>
         string description,
         string isbn,
         int pageCount,
+        string coverImageUrl,
         string authorFullname,
         string language,
         decimal price)
@@ -71,6 +74,9 @@ public sealed class Book : Entity<int>
         if (pageCount <= 0)
             return Result<Book>.Failure(Errors.Invalid("Page count must be greater than 0"));
 
+        var coverImageUrlResult =
+            Guard.AgainstNullOrEmpty(coverImageUrl, Errors.Invalid("Cover image url cannot be null or empty"));
+
         var authorResult = Guard.AgainstStringRange(authorFullname, 2, 100,
             Errors.Invalid("Author fullname must be between 2 and 100 characters"));
 
@@ -90,19 +96,12 @@ public sealed class Book : Entity<int>
             description,
             isbn,
             pageCount,
+            coverImageUrl,
             authorFullname,
             language,
             price));
     }
 
-    public Result SetCoverImage(string coverImageUrl)
-    {
-        if (string.IsNullOrWhiteSpace(coverImageUrl))
-            return Result.Failure(Errors.Invalid("Cover image URL cannot be empty"));
-
-        CoverImageUrl = coverImageUrl;
-        return Result.Success();
-    }
 
     public void SetAuthor(string authorFullName)
     {
@@ -110,85 +109,45 @@ public sealed class Book : Entity<int>
     }
 
 
-    public Result AddCategory(Category category)
+    public void AddCategory(Category category)
     {
-        if (_bookCategories.Any(bc => bc.Category == category))
-            return Result.Failure(Errors.Invalid("Category already exists for this book"));
+        if (!_bookCategories.Any(bc => bc.Category == category))
+        {
+            var bookCategoryResult = BookCategory.Create(Id, this, category);
 
-        var bookCategoryResult = BookCategory.Create(Id, this, category);
-
-        if (!bookCategoryResult.IsSuccess)
-            return Result.Failure(bookCategoryResult.Error!);
-
-        _bookCategories.Add(bookCategoryResult.Value!);
-
-        return Result.Success();
+            if (bookCategoryResult.IsSuccess)
+                _bookCategories.Add(bookCategoryResult.Value!);
+        }
     }
 
-    public Result RemoveCategory(Category category)
+    public void RemoveCategory(Category category)
     {
         var bookCategory = _bookCategories.FirstOrDefault(bc => bc.Category == category);
-
-        if (bookCategory == null)
-            return Result.Failure(Errors.Invalid("Category not found for this book"));
-
-        _bookCategories.Remove(bookCategory);
-        return Result.Success();
+        if (bookCategory != null)
+            _bookCategories.Remove(bookCategory);
     }
 
-    public Result Update(
+    public void Update(
         string? title = null,
         string? description = null,
         int? pageCount = null,
+        string? coverImageUrl = null,
         string? language = null,
         decimal? price = null)
     {
-        if (!string.IsNullOrWhiteSpace(title))
-        {
-            var titleResult = Guard.AgainstStringRange(title, 1, 200,
-                Errors.Invalid("Title must be between 1 and 200 characters"));
+        if (!string.IsNullOrWhiteSpace(title)) Title = title;
 
-            if (!titleResult.IsSuccess) return titleResult;
+        if (!string.IsNullOrWhiteSpace(description)) Description = description;
 
-            Title = title;
-        }
+        if (pageCount.HasValue && pageCount.Value > 0) PageCount = pageCount.Value;
+        if (!string.IsNullOrWhiteSpace(coverImageUrl)) CoverImageUrl = coverImageUrl;
+        if (!string.IsNullOrWhiteSpace(language)) Language = language;
 
-        if (!string.IsNullOrWhiteSpace(description))
-        {
-            var descriptionResult = Guard.AgainstStringRange(description, 10, 2000,
-                Errors.Invalid("Description must be between 10 and 2000 characters"));
+        if (price.HasValue && price.Value >= 0) Price = price.Value;
+    }
 
-            if (!descriptionResult.IsSuccess) return descriptionResult;
-
-            Description = description;
-        }
-
-        if (pageCount.HasValue)
-        {
-            if (pageCount.Value <= 0)
-                return Result.Failure(Errors.Invalid("Page count must be greater than 0"));
-
-            PageCount = pageCount.Value;
-        }
-
-        if (!string.IsNullOrWhiteSpace(language))
-        {
-            var languageResult = Guard.AgainstStringRange(language, 2, 50,
-                Errors.Invalid("Language must be between 2 and 50 characters"));
-
-            if (!languageResult.IsSuccess) return languageResult;
-
-            Language = language;
-        }
-
-        if (price.HasValue)
-        {
-            if (price.Value < 0)
-                return Result.Failure(Errors.Invalid("Price cannot be negative"));
-
-            Price = price.Value;
-        }
-
-        return Result.Success();
+    public void Delete()
+    {
+        IsDeleted = true;
     }
 }

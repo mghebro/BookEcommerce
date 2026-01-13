@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EcommerceLearn.Application.Features.Books.Queries.GetAllBooks;
 
 public sealed class GetAllBooksQueryHandler
-    : IRequestHandler<GetAllBooksQuery, List<Book>>
+    : IRequestHandler<GetAllBooksQuery, IQueryable<Book>>
 {
     private readonly IDataContext _context;
 
@@ -15,12 +15,12 @@ public sealed class GetAllBooksQueryHandler
         _context = context;
     }
 
-    public async Task<List<Book>> Handle(
-        GetAllBooksQuery request,
-        CancellationToken ct)
+    public Task<IQueryable<Book>> Handle(GetAllBooksQuery request, CancellationToken ct)
     {
-        return await _context.Books
+        var query = _context.Books
             .AsNoTracking()
-            .ToListAsync(ct);
+            .Where(b => !b.IsDeleted);
+
+        return Task.FromResult(query);
     }
 }

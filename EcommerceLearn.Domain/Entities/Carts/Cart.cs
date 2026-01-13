@@ -1,6 +1,5 @@
 using EcommerceLearn.Domain.Common.Entities;
 using EcommerceLearn.Domain.Common.Results;
-using EcommerceLearn.Domain.Entities.Books;
 using EcommerceLearn.Domain.Entities.Users;
 
 namespace EcommerceLearn.Domain.Entities.Carts;
@@ -8,15 +7,14 @@ namespace EcommerceLearn.Domain.Entities.Carts;
 public sealed class Cart : Entity<int>
 {
     public int UserId { get; private set; }
+    public User User { get; private set; } = null!;
 
     private readonly List<CartItem> _cartItems = new();
-    public IReadOnlyCollection<CartItem> CartItems => _cartItems.AsReadOnly();
-
-    public User User { get; private set; } = null!;
+    public IReadOnlyCollection<CartItem> CartItems => _cartItems;
 
     private Cart()
     {
-    }
+    } 
 
     private Cart(User user)
     {
@@ -29,55 +27,43 @@ public sealed class Cart : Entity<int>
         return new Cart(user);
     }
 
-    public Result AddBook(Book book, int quantity)
+    public void AddBook(int bookId, int quantity)
     {
-        var existingItem = _cartItems
-            .FirstOrDefault(ci => ci.BookId == book.Id);
+        if (quantity <= 0)
+            return;
 
-        if (existingItem is null)
+        var existingItem = _cartItems.FirstOrDefault(ci => ci.BookId == bookId);
+
+        if (existingItem == null)
         {
-            var cartItemResult = CartItem.Create(book, quantity);
-            if (!cartItemResult.IsSuccess)
-                return cartItemResult;
-
-            _cartItems.Add(cartItemResult.Value!);
+            var cartItem = CartItem.Create(bookId, quantity);
+            _cartItems.Add(cartItem.Value!);
         }
         else
         {
-            var increaseResult = existingItem.IncreaseQuantity(quantity);
-            if (!increaseResult.IsSuccess)
-                return increaseResult;
+            existingItem.IncreaseQuantity(quantity);
         }
-
-        return Result.Success();
     }
 
-    public Result RemoveBook(int bookId, int quantityToRemove)
-    {
-        var item = _cartItems.FirstOrDefault(ci => ci.BookId == bookId);
-        if (item is null)
-            return Result.Failure(Errors.NotFound("Book not found in cart."));
 
+    public void RemoveBook(int bookId, int quantityToRemove)
+    {
         if (quantityToRemove <= 0)
-            return Result.Failure(Errors.Invalid("Quantity to remove must be greater than 0."));
+            return;
+
+        var item = _cartItems.FirstOrDefault(ci => ci.BookId == bookId);
+        if (item == null)
+            return;
 
         if (quantityToRemove >= item.Quantity)
-        {
             _cartItems.Remove(item);
-        }
         else
-        {
-            var decreaseResult = item.DecreaseQuantity(quantityToRemove);
-            if (!decreaseResult.IsSuccess)
-                return decreaseResult;
-        }
-
-        return Result.Success();
+            item.DecreaseQuantity(quantityToRemove);
     }
 
-    public Result ClearCart()
+
+    public void ClearCart()
     {
         _cartItems.Clear();
-        return Result.Success();
     }
 }

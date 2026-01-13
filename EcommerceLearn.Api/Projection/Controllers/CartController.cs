@@ -37,7 +37,7 @@ public class CartController : ControllerBase
             return BadRequest(new { error = result.Error?.Message });
 
         var cartResult = await _mediator.Send(new GetCartByUserIdQuery(userId), ct);
-        return Ok(cartResult.Value);
+        return Ok(cartResult);
     }
 
     [HttpDelete("remove")]
@@ -53,6 +53,6 @@ public class CartController : ControllerBase
             return BadRequest(new { error = result.Error?.Message });
 
         var cartResult = await _mediator.Send(new GetCartByUserIdQuery(userId), ct);
-        return Ok(cartResult.Value);
+        return Ok(cartResult);
     }
 }

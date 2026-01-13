@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceLearn.Application.Features.Carts.Queries.GetCartByUserId;
 
-public class GetCartByUserIdQueryHandler : IRequestHandler<GetCartByUserIdQuery, Result<Cart>>
+public class GetCartByUserIdQueryHandler : IRequestHandler<GetCartByUserIdQuery, IQueryable<Cart>>
 {
     private readonly IDataContext _context;
 
@@ -15,15 +15,13 @@ public class GetCartByUserIdQueryHandler : IRequestHandler<GetCartByUserIdQuery,
         _context = context;
     }
 
-    public async Task<Result<Cart>> Handle(GetCartByUserIdQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Cart>> Handle(GetCartByUserIdQuery request, CancellationToken cancellationToken)
     {
-        var cart = await _context.Carts
-            .Include(c => c.CartItems)
+        var cartQuery = _context.Carts
+            .Include(c => c.CartItems.Where(ci => !ci.Book.IsDeleted))
             .ThenInclude(ci => ci.Book)
-            .FirstOrDefaultAsync(c => c.UserId == request.UserId, cancellationToken);
+            .Where(c => c.UserId == request.UserId);
 
-        if (cart == null) return Result<Cart>.Failure(Errors.NotFound("Cart not found for this user."));
-
-        return Result<Cart>.Success(cart);
+        return Task.FromResult(cartQuery);
     }
 }

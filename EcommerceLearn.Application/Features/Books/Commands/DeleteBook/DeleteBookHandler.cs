@@ -1,3 +1,4 @@
+using EcommerceLearn.Application.Features.Books.Queries.GetBookById;
 using EcommerceLearn.Application.Interfaces.Persistence;
 using EcommerceLearn.Domain.Common.Results;
 using Microsoft.EntityFrameworkCore;
@@ -8,22 +9,24 @@ namespace EcommerceLearn.Application.Features.Books.Commands.DeleteBook;
 public sealed class DeleteBookHandler : IRequestHandler<DeleteBookCommand, Result>
 {
     private readonly IDataContext _db;
+    private readonly IMediator _mediator;
 
-    public DeleteBookHandler(IDataContext db)
+    public DeleteBookHandler(IDataContext db, IMediator mediator)
     {
         _db = db;
+        _mediator = mediator;
     }
 
 
-    public async Task<Result> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteBookCommand request, CancellationToken ct)
     {
-        var book = await _db.Books.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
-
+        var bookQuery = await _mediator.Send(new GetBookByIdQueryable(request.Id), ct);
+        var book = await bookQuery.FirstOrDefaultAsync(ct);
         if (book == null)
             return Result.Failure(Errors.NotFound("Book not found"));
 
-        _db.Books.Remove(book);
-        await _db.SaveChangesAsync(cancellationToken);
+        book.Delete();
+        await _db.SaveChangesAsync(ct);
 
         return Result.Success();
     }

@@ -6,53 +6,44 @@ namespace EcommerceLearn.Domain.Entities.Carts;
 
 public sealed class CartItem : Entity<int>
 {
-    public int Quantity { get; private set; }
-
     public int BookId { get; private set; }
     public Book Book { get; private set; } = null!;
-
-    public int CartId { get; private set; }
-    public Cart Cart { get; private set; } = null!;
+    public int Quantity { get; private set; }
 
     private CartItem()
     {
-    }
+    } 
 
-    private CartItem(Book book, int quantity)
+    private CartItem(int bookId, int quantity)
     {
-        Book = book;
-        BookId = book.Id;
+        BookId = bookId;
         Quantity = quantity;
     }
 
-    public static Result<CartItem> Create(Book book, int quantity)
+    public static Result<CartItem> Create(int bookId, int quantity)
     {
         if (quantity <= 0)
             return Result<CartItem>.Failure(
                 Errors.Invalid("Quantity must be greater than 0"));
 
-        return Result<CartItem>.Success(new CartItem(book, quantity));
+        return Result<CartItem>.Success(
+            new CartItem(bookId, quantity));
     }
 
-    public Result IncreaseQuantity(int quantity)
+    public void IncreaseQuantity(int quantity)
     {
-        if (quantity <= 0)
-            return Result.Failure(
-                Errors.Invalid("Quantity must be greater than 0"));
-
-        Quantity += quantity;
-        return Result.Success();
+        if (quantity <= 0 == false)
+            Quantity += quantity;
     }
 
-    public Result DecreaseQuantity(int quantity)
+    public void DecreaseQuantity(int quantity)
     {
         if (quantity <= 0)
-            return Result.Failure(Errors.Invalid("Quantity must be greater than 0."));
+            return;
 
         if (quantity > Quantity)
-            return Result.Failure(Errors.Invalid("Cannot decrease more than current quantity."));
+            return;
 
         Quantity -= quantity;
-        return Result.Success();
     }
 }

@@ -1,5 +1,4 @@
 using EcommerceLearn.Domain.Entities.Books;
-using EcommerceLearn.Domain.Enums.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

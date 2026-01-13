@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using EcommerceLearn.Domain.Entities.Users;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace EcommerceLearn.Infrastructure.Security;
@@ -23,7 +22,7 @@ public sealed class JwtTokenService : IJwtTokenService
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
         var creds = new SigningCredentials(

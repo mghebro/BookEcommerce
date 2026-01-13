@@ -1,3 +1,4 @@
+using EcommerceLearn.Application.Features.Carts.Queries.GetCartByUserId;
 using MediatR;
 using EcommerceLearn.Domain.Entities.Orders;
 using EcommerceLearn.Domain.Common.Results;
@@ -9,23 +10,21 @@ namespace EcommerceLearn.Application.Features.Orders.Commands.PlaceOrder;
 public sealed class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand, Result>
 {
     private readonly IDataContext _context;
+    private readonly IMediator _mediator;
 
-    public PlaceOrderCommandHandler(IDataContext context)
+    public PlaceOrderCommandHandler(IDataContext context, IMediator mediator)
     {
         _context = context;
+        _mediator = mediator;
     }
 
     public async Task<Result> Handle(PlaceOrderCommand request, CancellationToken ct)
     {
-        var cart = await _context.Carts
-            .Include(c => c.CartItems)
-            .ThenInclude(ci => ci.Book)
-            .FirstOrDefaultAsync(c => c.UserId == request.UserId, ct);
+        var cartQuery = await _mediator.Send(new GetCartByUserIdQuery(request.UserId), ct);
+        var cart = await cartQuery.FirstOrDefaultAsync(ct);
 
-        if (cart == null || !cart.CartItems.Any())
-            return Result.Failure(Errors.Invalid("Cart is empty or not found."));
-
-        var orderResult = Order.Create(request.UserId, request.ShippingAddress);
+        var orderResult = Order.Create(request.UserId, request.Street, request.City, request.State, request.Country,
+            request.ZipCode);
         if (!orderResult.IsSuccess)
             return Result.Failure(orderResult.Error!);
 
@@ -33,20 +32,11 @@ public sealed class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand
 
         foreach (var cartItem in cart.CartItems)
         {
-            if (cartItem.Book == null)
-                return Result.Failure(Errors.NotFound($"Book with ID {cartItem.BookId} not found."));
-
-            var orderItemResult = OrderItem.Create(cartItem.Book, cartItem.Quantity);
-            if (!orderItemResult.IsSuccess)
-                return Result.Failure(orderItemResult.Error!);
-
-            var addResult = order.AddOrderItem(orderItemResult.Value!);
-            if (!addResult.IsSuccess)
-                return Result.Failure(addResult.Error!);
+            var orderItem = OrderItem.FromCartItem(cartItem);
+            order.AddOrderItem(orderItem);
         }
 
         _context.Orders.Add(order);
-
         cart.ClearCart();
 
         await _context.SaveChangesAsync(ct);

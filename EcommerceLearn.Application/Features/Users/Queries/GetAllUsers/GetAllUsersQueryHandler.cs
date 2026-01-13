@@ -1,12 +1,10 @@
 using EcommerceLearn.Application.Interfaces.Persistence;
 using EcommerceLearn.Domain.Entities.Users;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
-
 
 namespace EcommerceLearn.Application.Features.Users.Queries.GetAllUsers;
 
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<User>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IQueryable<User>>
 {
     private readonly IDataContext _db;
 
@@ -15,8 +13,8 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
         _db = dataContext;
     }
 
-    public async Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken ct)
+    public Task<IQueryable<User>> Handle(GetAllUsersQuery request, CancellationToken ct)
     {
-        return await _db.Users.ToListAsync(ct);
+        return Task.FromResult(_db.Users.AsQueryable());
     }
 }

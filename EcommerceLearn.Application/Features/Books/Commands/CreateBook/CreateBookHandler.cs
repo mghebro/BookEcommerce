@@ -23,6 +23,7 @@ public sealed class CreateBookHandler : IRequestHandler<CreateBookCommand, Resul
             request.Description,
             request.Isbn,
             request.PageCount,
+            request.CoverImageUrl,
             request.AuthorFullname,
             request.Language,
             request.Price
@@ -33,21 +34,9 @@ public sealed class CreateBookHandler : IRequestHandler<CreateBookCommand, Resul
 
         var book = bookResult.Value!;
 
-        if (!string.IsNullOrWhiteSpace(request.CoverImageUrl))
-        {
-            var coverResult = book.SetCoverImage(request.CoverImageUrl);
-            if (!coverResult.IsSuccess)
-                return Result.Failure(coverResult.Error!);
-        }
-
-
         if (request.Categories != null && request.Categories.Any())
             foreach (var category in request.Categories)
-            {
-                var categoryResult = book.AddCategory(category);
-                if (!categoryResult.IsSuccess)
-                    return Result.Failure(categoryResult.Error!);
-            }
+                book.AddCategory(category);
 
         _db.Books.Add(book);
         await _db.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,7 @@
 using EcommerceLearn.Domain.Common.Entities;
 using EcommerceLearn.Domain.Common.Results;
 using EcommerceLearn.Domain.Entities.Books;
+using EcommerceLearn.Domain.Entities.Carts;
 
 namespace EcommerceLearn.Domain.Entities.Orders;
 
@@ -26,26 +27,18 @@ public sealed class OrderItem : Entity<int>
         Price = book.Price * quantity;
     }
 
-    public static Result<OrderItem> Create(Book book, int quantity)
+
+    public static OrderItem FromCartItem(CartItem cartItem)
     {
-        if (quantity <= 0)
-            return Result<OrderItem>.Failure(
-                Errors.Invalid("Quantity must be greater than 0"));
-
-        if (book.Price < 0)
-            return Result<OrderItem>.Failure(
-                Errors.Invalid("Book price cannot be negative"));
-
-        return Result<OrderItem>.Success(new OrderItem(book, quantity));
+        return new OrderItem(cartItem.Book, cartItem.Quantity);
     }
 
-    public Result IncreaseQuantity(int quantity)
+    public void IncreaseQuantity(int quantity)
     {
         if (quantity <= 0)
-            return Result.Failure(Errors.Invalid("Quantity must be greater than 0"));
+            return;
 
         Quantity += quantity;
         Price = Book.Price * Quantity;
-        return Result.Success();
     }
 }

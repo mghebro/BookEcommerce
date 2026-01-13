@@ -8,8 +8,8 @@ public sealed record CreateBookCommand(
     string Description,
     string Isbn,
     int PageCount,
+    string CoverImageUrl,
     string AuthorFullname,
     string Language,
     decimal Price,
-    string? CoverImageUrl = null,
     List<Category>? Categories = null) : IRequest<Result>;

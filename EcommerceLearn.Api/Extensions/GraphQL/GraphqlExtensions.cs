@@ -26,8 +26,8 @@ public static class GraphqlExtensions
             // Types
             .AddType<UserType>()
             .AddType<BookType>()
-            .AddType<CartType>();
-
+            .AddType<CartType>()
+            .AddType<CartItemType>();
         return services;
     }
 }

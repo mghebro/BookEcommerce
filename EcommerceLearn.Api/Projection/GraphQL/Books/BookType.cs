@@ -17,7 +17,7 @@ public class BookType : ObjectType<Book>
         descriptor.Field(x => x.Language).Type<StringType>();
         descriptor.Field(x => x.Price).Type<DecimalType>();
 
-
+        descriptor.Ignore(x => x.IsDeleted);
         // descriptor.Field(x => x.BookCategories)
         //    .Type<ListType<BookCategoryType>>(); 
 

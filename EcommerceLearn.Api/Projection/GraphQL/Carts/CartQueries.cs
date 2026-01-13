@@ -3,6 +3,7 @@ using EcommerceLearn.Application.Features.Carts.Queries.GetCartByUserId;
 using EcommerceLearn.Domain.Entities.Carts;
 using HotChocolate.Authorization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceLearn.Api.Projection.GraphQL.Carts;
 
@@ -10,7 +11,7 @@ namespace EcommerceLearn.Api.Projection.GraphQL.Carts;
 public sealed class CartQueries
 {
     [Authorize]
-    public async Task<Cart> MyCart(
+    public async Task<IQueryable<Cart>> MyCart(
         IMediator mediator,
         ClaimsPrincipal user,
         CancellationToken ct)
@@ -19,11 +20,9 @@ public sealed class CartQueries
         if (!int.TryParse(userIdClaim, out var userId))
             throw new GraphQLException("Invalid user ID");
 
-        var result = await mediator.Send(new GetCartByUserIdQuery(userId), ct);
+        var cartQuery = await mediator.Send(new GetCartByUserIdQuery(userId), ct);
 
-        if (!result.IsSuccess)
-            throw new GraphQLException(result.Error?.Message ?? "");
 
-        return result.Value!;
+        return cartQuery;
     }
 }

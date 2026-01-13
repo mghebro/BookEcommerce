@@ -10,8 +10,8 @@ public class CartType : ObjectType<Cart>
         descriptor.Field(c => c.Id)
             .Type<NonNullType<IdType>>();
 
-        // descriptor.Field(c => c.CartItems)
-        //     .Type<NonNullType<ListType<NonNullType<CartItemType>>>>();
+        descriptor.Field(c => c.CartItems)
+            .Type<NonNullType<ListType<NonNullType<CartItemType>>>>();
 
         descriptor.Field("totalItems")
             .Type<NonNullType<IntType>>()

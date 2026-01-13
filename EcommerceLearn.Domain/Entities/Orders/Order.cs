@@ -29,55 +29,43 @@ public sealed class Order : Entity<int>
         TotalAmount = 0;
     }
 
-    public static Result<Order> Create(int userId, Address shippingAddress)
+    public static Result<Order> Create(int userId, string street, string city, string state, string country,
+        string zipCode)
     {
-        if (userId <= 0)
-            return Result<Order>.Failure(Errors.Invalid("UserId must be greater than 0"));
+        var address = Address.Create(street, city, state, country, zipCode);
 
-        if (shippingAddress is null)
-            return Result<Order>.Failure(Errors.Invalid("Shipping address cannot be null"));
-
-        return Result<Order>.Success(new Order(userId, shippingAddress));
+        return Result<Order>.Success(new Order(userId, address));
     }
 
-    public Result AddOrderItem(OrderItem item)
+    public void AddOrderItem(OrderItem item)
     {
-        if (item is null)
-            return Result.Failure(Errors.Invalid("Order item cannot be null"));
+        if (item == null)
+            return;
 
         var existing = _orderItems.FirstOrDefault(oi => oi.BookId == item.BookId);
         if (existing != null)
-        {
-            var result = existing.IncreaseQuantity(item.Quantity);
-            if (!result.IsSuccess) return result;
-        }
+            existing.IncreaseQuantity(item.Quantity);
         else
-        {
             _orderItems.Add(item);
-        }
 
         RecalculateTotal();
-        return Result.Success();
     }
 
-    public Result RemoveOrderItem(int bookId, int quantity)
+    public void RemoveOrderItem(int bookId, int quantity)
     {
+        if (quantity <= 0)
+            return;
+
         var item = _orderItems.FirstOrDefault(oi => oi.BookId == bookId);
         if (item == null)
-            return Result.Failure(Errors.NotFound("Order item not found"));
+            return;
 
         if (quantity >= item.Quantity)
-        {
             _orderItems.Remove(item);
-        }
         else
-        {
-            var result = item.IncreaseQuantity(-quantity); // negative quantity
-            if (!result.IsSuccess) return result;
-        }
+            item.IncreaseQuantity(-quantity);
 
         RecalculateTotal();
-        return Result.Success();
     }
 
     private void RecalculateTotal()
@@ -85,18 +73,16 @@ public sealed class Order : Entity<int>
         TotalAmount = _orderItems.Sum(oi => oi.Price);
     }
 
-    public Result SetShippingAddress(Address address)
+    public void SetShippingAddress(Address address)
     {
         if (address == null)
-            return Result.Failure(Errors.Invalid("Shipping address cannot be null"));
+            return;
 
         ShippingAddress = address;
-        return Result.Success();
     }
 
-    public Result SetStatus(OrderStatus status)
+    public void SetStatus(OrderStatus status)
     {
         Status = status;
-        return Result.Success();
     }
 }
