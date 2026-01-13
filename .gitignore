@@ -59,3 +59,5 @@ nunit-*.xml
 
 # Rider / ReSharper
 *.DotSettings.user
+
+**/Migrations/
