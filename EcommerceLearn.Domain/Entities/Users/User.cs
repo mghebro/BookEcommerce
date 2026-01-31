@@ -1,8 +1,10 @@
 ﻿using EcommerceLearn.Domain.Common.Entities;
 using EcommerceLearn.Domain.Common.Results;
 using EcommerceLearn.Domain.Common.Guards;
+using EcommerceLearn.Domain.Entities.Addresses;
 using EcommerceLearn.Domain.Entities.Auth;
 using EcommerceLearn.Domain.Entities.Carts;
+using EcommerceLearn.Domain.Entities.Orders;
 using EcommerceLearn.Domain.ValueObjects;
 
 namespace EcommerceLearn.Domain.Entities.Users;
@@ -19,7 +21,9 @@ public sealed class User : Entity<int>
     public Cart Cart { get; private set; } = null!;
     public EmailVerification EmailVerification { get; private set; }
     public PasswordVerification PasswordEmailVerification { get; private set; }
+    public List<UserAddress> UserAddresses { get; private set; } = new();
 
+    public List<Order> Orders { get; private set; } = new();
 
     // Helps EF Core to create table 
     private User()
@@ -31,6 +35,8 @@ public sealed class User : Entity<int>
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+        UserAddresses = new List<UserAddress>();
+        Orders = new List<Order>();
     }
 
     public void CreateCart()
@@ -82,5 +88,22 @@ public sealed class User : Entity<int>
     public void SetPasswordEmailVerification(PasswordVerification verification)
     {
         PasswordEmailVerification = verification;
+    }
+
+    public Result<UserAddress> AddAddress(
+        string country,
+        string city,
+        string street,
+        string postalCode
+    )
+    {
+        var addressResult = UserAddress.Create(
+            Id, country, city, street, postalCode);
+
+        if (!addressResult.IsSuccess)
+            return Result<UserAddress>.Failure(addressResult.Error!);
+
+        UserAddresses.Add(addressResult.Value!);
+        return addressResult;
     }
 }

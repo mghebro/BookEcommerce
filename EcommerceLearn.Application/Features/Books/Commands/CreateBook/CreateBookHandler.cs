@@ -26,18 +26,15 @@ public sealed class CreateBookHandler : IRequestHandler<CreateBookCommand, Resul
             request.CoverImageUrl,
             request.AuthorFullname,
             request.Language,
-            request.Price
+            request.Price,
+            request.BookCategory
         );
+
 
         if (!bookResult.IsSuccess)
             return Result.Failure(bookResult.Error!);
 
         var book = bookResult.Value!;
-
-        if (request.Categories != null && request.Categories.Any())
-            foreach (var category in request.Categories)
-                book.AddCategory(category);
-
         _db.Books.Add(book);
         await _db.SaveChangesAsync(cancellationToken);
 

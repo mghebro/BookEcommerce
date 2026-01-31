@@ -21,15 +21,13 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("place-order")]
-    public async Task<IActionResult> PlaceOrder([FromBody] ShippingAddressRequest request, CancellationToken ct)
+    public async Task<IActionResult> PlaceOrder(int addressId, CancellationToken ct)
     {
         var userId = this.GetUserId();
-        var command = new PlaceOrderCommand(userId, request.Street, request.City, request.State, request.Country,
-            request.ZipCode);
+        var command = new PlaceOrderCommand(userId, addressId);
 
         var result = await _mediator.Send(command, ct);
 
-        if (!result.IsSuccess) return BadRequest(result.Error);
 
         return Ok();
     }

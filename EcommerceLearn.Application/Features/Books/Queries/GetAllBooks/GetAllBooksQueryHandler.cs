@@ -17,9 +17,7 @@ public sealed class GetAllBooksQueryHandler
 
     public Task<IQueryable<Book>> Handle(GetAllBooksQuery request, CancellationToken ct)
     {
-        var query = _context.Books
-            .AsNoTracking()
-            .Where(b => !b.IsDeleted);
+        var query = _context.Books.Where(b => b.IsDeleted == false);
 
         return Task.FromResult(query);
     }

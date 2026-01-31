@@ -22,9 +22,12 @@ public sealed class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand
     {
         var cartQuery = await _mediator.Send(new GetCartByUserIdQuery(request.UserId), ct);
         var cart = await cartQuery.FirstOrDefaultAsync(ct);
-
-        var orderResult = Order.Create(request.UserId, request.Street, request.City, request.State, request.Country,
-            request.ZipCode);
+        var address =
+            await _context.UserAddresses.FirstOrDefaultAsync(
+                a => a.UserId == request.UserId && a.Id == request.AddressId, ct);
+        if (address == null)
+            return Result.Failure(Errors.NotFound("Address not found"));
+        var orderResult = Order.Create(request.UserId, address);
         if (!orderResult.IsSuccess)
             return Result.Failure(orderResult.Error!);
 
@@ -37,6 +40,7 @@ public sealed class PlaceOrderCommandHandler : IRequestHandler<PlaceOrderCommand
         }
 
         _context.Orders.Add(order);
+        _context.CartItems.RemoveRange(cart.CartItems);
         cart.ClearCart();
 
         await _context.SaveChangesAsync(ct);

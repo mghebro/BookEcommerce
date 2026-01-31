@@ -1,4 +1,5 @@
 ﻿using EcommerceLearn.Application.Interfaces.Persistence;
+using EcommerceLearn.Domain.Entities.Addresses;
 using EcommerceLearn.Domain.Entities.Auth;
 using EcommerceLearn.Domain.Entities.Books;
 using EcommerceLearn.Domain.Entities.Carts;
@@ -11,6 +12,7 @@ namespace EcommerceLearn.Infrastructure.Persistence;
 public sealed class DataContext : DbContext, IDataContext
 {
     public DbSet<User> Users => Set<User>();
+    public DbSet<UserAddress> UserAddresses => Set<UserAddress>();
     public DbSet<Book> Books => Set<Book>();
     public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<CartItem> CartItems => Set<CartItem>();

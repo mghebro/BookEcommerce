@@ -12,7 +12,7 @@ public sealed class CartItem : Entity<int>
 
     private CartItem()
     {
-    } 
+    }
 
     private CartItem(int bookId, int quantity)
     {

@@ -12,4 +12,4 @@ public sealed record CreateBookCommand(
     string AuthorFullname,
     string Language,
     decimal Price,
-    List<Category>? Categories = null) : IRequest<Result>;
+    Category BookCategory) : IRequest<Result>;

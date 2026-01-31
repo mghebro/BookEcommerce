@@ -26,7 +26,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.Property(b => b.Isbn)
             .IsRequired()
             .HasMaxLength(17);
-
+        builder.HasIndex(b => b.Isbn).IsUnique();
 
         builder.Property(b => b.PageCount)
             .IsRequired();
@@ -42,19 +42,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .IsRequired()
             .HasMaxLength(50);
 
-
         builder.Property(b => b.Price)
             .IsRequired()
             .HasPrecision(18, 2);
-
-        builder.HasMany(b => b.BookCategories)
-            .WithOne(bc => bc.Book)
-            .HasForeignKey(bc => bc.BookId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
-        builder.Metadata
-            .FindNavigation(nameof(Book.BookCategories))!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

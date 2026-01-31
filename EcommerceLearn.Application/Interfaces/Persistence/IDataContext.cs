@@ -1,4 +1,5 @@
-﻿using EcommerceLearn.Domain.Entities.Auth;
+﻿using EcommerceLearn.Domain.Entities.Addresses;
+using EcommerceLearn.Domain.Entities.Auth;
 using EcommerceLearn.Domain.Entities.Books;
 using EcommerceLearn.Domain.Entities.Carts;
 using EcommerceLearn.Domain.Entities.Orders;
@@ -10,6 +11,7 @@ namespace EcommerceLearn.Application.Interfaces.Persistence;
 public interface IDataContext
 {
     DbSet<User> Users { get; }
+    DbSet<UserAddress> UserAddresses { get; }
     DbSet<Book> Books { get; }
     DbSet<Cart> Carts { get; }
     DbSet<Order> Orders { get; }

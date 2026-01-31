@@ -22,6 +22,19 @@ public class CartController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpPost("merge-guest")]
+    public async Task<IActionResult> MergeGuestCart([FromBody] MergeGuestCartRequest request, CancellationToken ct)
+    {
+        var userId = this.GetUserId();
+
+        foreach (var item in request.Items)
+        {
+            var command = new AddToCartCommand(userId, item.BookId, item.Quantity);
+            await _mediator.Send(command, ct);
+        }
+
+        return Ok();
+    }
 
     [HttpPost("add")]
     public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request, CancellationToken ct)
@@ -33,11 +46,8 @@ public class CartController : ControllerBase
 
         var result = await _mediator.Send(command, ct);
 
-        if (!result.IsSuccess)
-            return BadRequest(new { error = result.Error?.Message });
 
-        var cartResult = await _mediator.Send(new GetCartByUserIdQuery(userId), ct);
-        return Ok(cartResult);
+        return Ok(result);
     }
 
     [HttpDelete("remove")]
@@ -49,10 +59,7 @@ public class CartController : ControllerBase
         var command = new RemoveFromCartCommand(userId, request.BookId, request.QuantityToRemove);
         var result = await _mediator.Send(command, ct);
 
-        if (!result.IsSuccess)
-            return BadRequest(new { error = result.Error?.Message });
 
-        var cartResult = await _mediator.Send(new GetCartByUserIdQuery(userId), ct);
-        return Ok(cartResult);
+        return Ok(result);
     }
 }

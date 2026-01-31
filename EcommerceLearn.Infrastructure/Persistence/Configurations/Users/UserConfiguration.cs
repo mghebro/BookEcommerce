@@ -15,5 +15,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<Cart>(c => c.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(u => u.UserAddresses)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -12,39 +12,24 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasKey(o => o.Id);
 
-        builder.Property(o => o.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Property(o => o.UserId)
-            .IsRequired();
-
         builder.HasOne(o => o.User)
-            .WithMany()
+            .WithMany(u => u.Orders)
             .HasForeignKey(o => o.UserId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
+
         builder.Property(o => o.Status)
-            .IsRequired()
-            .HasConversion<int>();
+            .HasConversion<int>()
+            .IsRequired();
 
         builder.Property(o => o.TotalAmount)
-            .IsRequired()
-            .HasPrecision(18, 2);
-
-        builder.OwnsOne(o => o.ShippingAddress, sa =>
-        {
-            sa.Property(a => a.Country).HasMaxLength(100).IsRequired();
-            sa.Property(a => a.City).HasMaxLength(100).IsRequired();
-            sa.Property(a => a.Street).HasMaxLength(200).IsRequired();
-            sa.Property(a => a.ZipCode).HasMaxLength(20).IsRequired();
-        });
-
+            .HasPrecision(18, 2)
+            .IsRequired();
         builder.HasMany(o => o.OrderItems)
             .WithOne(oi => oi.Order)
             .HasForeignKey(oi => oi.OrderId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Navigation(o => o.OrderItems)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

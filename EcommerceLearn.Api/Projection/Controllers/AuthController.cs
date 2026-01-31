@@ -1,9 +1,12 @@
+using EcommerceLearn.Api.Attributes;
 using EcommerceLearn.Application.Features.Users.Commands.DeleteUser;
 using EcommerceLearn.Application.Features.Auth.Commands.Register;
 using EcommerceLearn.Application.Contracts.Auth;
 using EcommerceLearn.Api.Extensions.Auth;
+using EcommerceLearn.Application.Features.Auth.Commands.ForgetPassword;
 using EcommerceLearn.Application.Features.Auth.Commands.Login;
 using EcommerceLearn.Application.Features.Auth.Commands.ResendVerification;
+using EcommerceLearn.Application.Features.Auth.Commands.ResetPassword;
 using EcommerceLearn.Application.Features.Auth.Commands.VerifyEmail;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
@@ -69,6 +72,31 @@ public class AuthController : ControllerBase
         var cmd = new ResendVerificationCommand(req.Email);
 
         var result = await _mediator.Send(cmd, ct);
+        return Ok(result);
+    }
+
+    [HttpPost("send-forget-password")]
+    public async Task<IActionResult> SendPasswordReset(ForgetPasswordRequest req, CancellationToken ct)
+    {
+        var cmd = new ForgetPasswordCommand(req.Email);
+
+        var result = await _mediator.Send(cmd, ct);
+
+        return Ok(result);
+    }
+
+    [HttpPost("reset-password"), PasswordResetAuthorize]
+    public async Task<IActionResult> ChangePassword(ResetPasswordRequest req, CancellationToken ct)
+    {
+        var email = HttpContext.Items["email"]?.ToString();
+
+        if (string.IsNullOrEmpty(email) || email != req.Email)
+            return Unauthorized(new { message = "Email mismatch with token" });
+
+        var cmd = new ResetPasswordCommand(req.Email, req.NewPassword);
+
+        var result = await _mediator.Send(cmd, ct);
+
         return Ok(result);
     }
 }

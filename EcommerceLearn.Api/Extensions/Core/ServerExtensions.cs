@@ -35,7 +35,7 @@ public static class ServerExtensions
     {
         services.AddSwaggerGen(options =>
         {
-            options.AddSecurityDefinition("Bearer", new()
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Description = "Please insert token",
@@ -44,18 +44,18 @@ public static class ServerExtensions
                 BearerFormat = "JWT",
                 Scheme = "bearer"
             });
-            options.AddSecurityRequirement(new()
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new()
+                        Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         }
                     },
-                    new string[]{}
+                    new string[] { }
                 }
             });
         });
@@ -66,7 +66,14 @@ public static class ServerExtensions
     {
         services.AddCors(cors =>
         {
-            cors.AddDefaultPolicy(policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+            cors.AddDefaultPolicy(policy =>
+            {
+                policy
+                    .WithOrigins("http://localhost:4200") 
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials(); 
+            });
         });
 
         return services;
