@@ -6,6 +6,7 @@ using MediatR;
 
 namespace EcommerceLearn.Api.Projection.GraphQL.Orders;
 
+[QueryType]
 public sealed class OrderQueries
 {
     [Authorize]

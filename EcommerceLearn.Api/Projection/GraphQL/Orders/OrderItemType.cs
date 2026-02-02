@@ -14,5 +14,12 @@ public class OrderItemType : ObjectType<OrderItem>
 
         descriptor.Field(oi => oi.Book)
             .Type<NonNullType<BookType>>();
+        descriptor.Field("subtotal")
+            .Type<NonNullType<DecimalType>>()
+            .Resolve(context =>
+            {
+                var orderItem = context.Parent<OrderItem>();
+                return orderItem.Price * orderItem.Quantity;
+            });
     }
 }

@@ -10,7 +10,8 @@ public class OrderType : ObjectType<Order>
     protected override void Configure(IObjectTypeDescriptor<Order> descriptor)
     {
         descriptor.Field(o => o.Id);
-        descriptor.Field(o => o.UserId);
+        descriptor.Field(o => o.UserId).Ignore();
+        descriptor.Field(o => o.User).Ignore();
         descriptor.Field(o => o.TotalAmount);
         descriptor.Field(o => o.Status);
 
@@ -19,5 +20,8 @@ public class OrderType : ObjectType<Order>
 
         descriptor.Field(o => o.OrderItems)
             .Type<NonNullType<ListType<NonNullType<OrderItemType>>>>();
+        descriptor.Field("totalItems")
+            .Type<NonNullType<IntType>>()
+            .Resolve(context => context.Parent<Order>().OrderItems?.Sum(oi => oi.Quantity) ?? 0);
     }
 }
