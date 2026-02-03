@@ -14,7 +14,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<DataContext>(options => { options.UseSqlServer(config.GetConnectionString("Default")); });
+        services.AddDbContext<DataContext>(options =>
+        {
+            options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+        });
 
         services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
 
